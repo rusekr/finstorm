@@ -48,7 +48,6 @@ import { DatabaseService } from '../services/database.service';
   ]
 })
 export class Tab2Page {
-
   // работа с модалом добавления, редактирования транзакции
   @ViewChild(IonModal) modal: IonModal;
   public message: string = '';
