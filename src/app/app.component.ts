@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 
+import { DatabaseService } from './services/database.service';
 
 @Component({
   selector: 'app-root',
@@ -12,5 +13,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
   ],
 })
 export class AppComponent {
-  constructor() {}
+  constructor(public databaseService: DatabaseService) {
+    databaseService.loadData();
+  }
 }

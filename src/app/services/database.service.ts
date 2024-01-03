@@ -41,6 +41,11 @@ export class DatabaseService {
     return (value ? JSON.parse(value) : []);
   }
 
+  private async setKeyData(key: string, data: any[]) {
+    await Preferences.set({ key: key, value: JSON.stringify(data) });
+    return data;
+  }
+
   public async addNewTransaction(data: Transaction) {
     this.transactions.unshift({
       type: data.type,
@@ -50,13 +55,17 @@ export class DatabaseService {
       tags: data.tags,
       // wallet: data.wallet 
     });
+    await this.setKeyData(this.TRANSACTIONS_STORAGE, this.transactions);
   }
 
   public async loadData() {
 
     this.tags = await this.getKeyData(this.TAG_STORAGE);
     this.wallets = await this.getKeyData(this.WALLETS_STORAGE);
-    this.transactions = await this.getKeyData(this.TRANSACTIONS_STORAGE);
+    this.transactions = (await this.getKeyData(this.TRANSACTIONS_STORAGE)).map((t: any) => {
+      t.date = new Date(t.date);
+      return t;
+    });
   }
 
 }
