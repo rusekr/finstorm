@@ -12,12 +12,12 @@ export interface Wallet {
 
 export interface Transaction {
   // TODO: добавить id: как ууид или инкремент
-  type: string, // тип - доход (income), расход (outcome)
+  type: number, // тип - доход (1), расход (-1)
   date: Date; // дата транзакции
   name: string; // имя 
   sum: number; // сумма
   tags: Tag[]; // тэги (категории)
-  wallet: Wallet; // связанный кошелёк
+  // wallet: Wallet; // связанный кошелёк
 }
 
 @Injectable({
@@ -48,7 +48,7 @@ export class DatabaseService {
       name: data.name,
       sum: data.sum,
       tags: data.tags,
-      wallet: data.wallet 
+      // wallet: data.wallet 
     });
   }
 

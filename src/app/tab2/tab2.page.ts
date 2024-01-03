@@ -19,7 +19,7 @@ import {
   IonModal
 } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
-import { DatabaseService } from '../services/database.service';
+import { DatabaseService, Transaction } from '../services/database.service';
 
 @Component({
   selector: 'app-tab2',
@@ -50,18 +50,27 @@ import { DatabaseService } from '../services/database.service';
 export class Tab2Page {
   // работа с модалом добавления, редактирования транзакции
   @ViewChild(IonModal) modal: IonModal;
-  public message: string = '';
-  public name: string = '';
+  public newTransaction: Transaction = {
+    type: -1,
+    date: new Date(),
+    name: '',
+    sum: 0,
+    tags: [],
+    // wallet: 0 
+  };
   cancel() {
-    this.modal.dismiss(null, 'cancel');
+    this.modal.dismiss({}, 'cancel');
   }
   confirm() {
-    this.modal.dismiss(this.name, 'confirm');
+    this.modal.dismiss(this.newTransaction, 'confirm');
   }
   onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<string>>;
+    const ev = event as CustomEvent<OverlayEventDetail<Transaction>>;
     if (ev.detail.role === 'confirm') {
-      this.message = `Hello, ${ev.detail.data}!`;
+      let newTr = ev.detail.data;
+      if (newTr !== undefined) {
+        this.databaseService.addNewTransaction(newTr);
+      }
     }
   }
 
@@ -69,6 +78,7 @@ export class Tab2Page {
   public transactions;
   constructor(public databaseService: DatabaseService) {
     this.transactions = databaseService.transactions;
+    this.databaseService = databaseService;
     //this.modal = 
   }
   // для оптимизации треканья транзакций т.к. их будут тонныы
