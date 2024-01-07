@@ -9,7 +9,7 @@
 <ion-content [fullscreen]="true">
 
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button id="open-modal" expand="block">
+    <ion-fab-button expand="block" (click)="openTransactionModal(null)">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
@@ -21,51 +21,9 @@
   </ion-header>
 
   <ion-list>
-    <ion-item *ngFor="let transaction of databaseService.transactions; index as position; trackBy: trackTransactions">
+    <ion-item *ngFor="let transaction of databaseService.transactions; index as position; trackBy: trackTransactions" (click)="openTransactionModal(transaction)">
       <ion-label>{{ transaction.type === 1 ? '' : '-' }}{{ transaction.sum }} "{{ transaction.name }}" - {{ transaction.date.toISOString() }} </ion-label>
     </ion-item>
   </ion-list>
-
-
-
-
-  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
-    <ng-template>
-      <ion-header>
-        <ion-toolbar>
-          <ion-buttons slot="start">
-            <ion-button (click)="cancel()">Отмена</ion-button>
-          </ion-buttons>
-          <ion-title>Добавить транзакцию</ion-title>
-          <ion-buttons slot="end">
-            <ion-button (click)="confirm()" [strong]="true">Ок</ion-button>
-          </ion-buttons>
-        </ion-toolbar>
-      </ion-header>
-      <ion-content class="ion-padding">
-        <ion-item>
-          <ion-input
-            label="Наименование"
-            labelPlacement="stacked"
-            type="text"
-            placeholder=""
-            [(ngModel)]="newTransaction.name"
-          ></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-input
-            label="Сумма"
-            labelPlacement="stacked"
-            type="number"
-            placeholder=""
-            [(ngModel)]="newTransaction.sum"
-          ></ion-input>
-        </ion-item>
-      </ion-content>
-    </ng-template>
-  </ion-modal>
-
-
-
 
 </ion-content>

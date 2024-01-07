@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { FormsModule } from '@angular/forms';
+// import { ModalController } from '@ionic/angular';
 import {
   IonButton,
   IonButtons,
@@ -16,10 +17,12 @@ import {
   IonIcon, 
   IonItem, 
   IonLabel,
-  IonModal
+  IonModal,
+  ModalController
 } from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 import { DatabaseService, Transaction } from '../services/database.service';
+import { TransactionModalPopupPage } from '../transaction-modal-popup/transaction-modal-popup.page';
 
 @Component({
   selector: 'app-tab2',
@@ -48,8 +51,11 @@ import { DatabaseService, Transaction } from '../services/database.service';
   ]
 })
 export class Tab2Page {
-  // работа с модалом добавления, редактирования транзакции
-  @ViewChild(IonModal) modal: IonModal;
+
+  // работа с транзакциями
+  public transactions;
+
+  // объект новой транзакции
   public newTransaction: Transaction = {
     type: -1,
     date: new Date(),
@@ -58,36 +64,56 @@ export class Tab2Page {
     tags: [],
     // wallet: 0 
   };
-  cancel() {
-    this.modal.dismiss({}, 'cancel');
-  }
-  confirm() {
-    this.modal.dismiss(this.newTransaction, 'confirm');
-  }
-  onWillDismiss(event: Event) {
-    const ev = event as CustomEvent<OverlayEventDetail<Transaction>>;
-    if (ev.detail.role === 'confirm') {
-      let newTr = ev.detail.data;
-      if (newTr !== undefined) {
-        this.databaseService.addNewTransaction(newTr);
-      }
-    }
-  }
 
-  // работа с транзакциями
-  public transactions;
-  constructor(public databaseService: DatabaseService) {
+  constructor(public databaseService: DatabaseService, private transactionModalCtrl: ModalController) {
     this.transactions = databaseService.transactions;
     this.databaseService = databaseService;
     //this.modal = 
   }
+
   // для оптимизации треканья транзакций т.к. их будут тонныы
   trackTransactions(index: number, transactionObject: any) {
     return index;// TODO: transactionObject.id;
   }
-  showAddTransactionModal () {
 
+
+  async openTransactionModal (transaction: any) {
+
+    const modal = await this.transactionModalCtrl.create({
+      component: TransactionModalPopupPage,
+      componentProps: {
+        'name': "place name",
+        'sum': 0
+      }
+    });
+    modal.onDidDismiss().then((modelData) => {
+      if (modelData !== null) {
+        console.log('Modal Data : ' + modelData.data);
+        let newTr = modelData.data;
+        if (newTr !== undefined) {
+          this.databaseService.addNewTransaction(newTr);
+        }
+      }
+    });
+    return await modal.present();
+    
   }
+  // cancel() {
+  //   this.modal.dismiss({}, 'cancel');
+  // }
+  // confirm() {
+  //   this.modal.dismiss(this.newTransaction, 'confirm');
+  // }
+  // onWillDismiss(event: Event) {
+  //   const ev = event as CustomEvent<OverlayEventDetail<Transaction>>;
+  //   if (ev.detail.role === 'confirm') {
+  //     let newTr = ev.detail.data;
+  //     if (newTr !== undefined) {
+  //       this.databaseService.addNewTransaction(newTr);
+  //     }
+  //   }
+  // }
+
 
 
 
