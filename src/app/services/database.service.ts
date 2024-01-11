@@ -46,7 +46,11 @@ export class DatabaseService {
     return data;
   }
 
-  public async addNewTransaction(data: Transaction) {
+  public async saveTransactions() {
+    return this.setKeyData(this.TRANSACTIONS_STORAGE, this.transactions);
+  }
+
+  public addTransaction(data: Transaction) {
     this.transactions.unshift({
       type: data.type,
       date: data.date || new Date(),
@@ -55,7 +59,6 @@ export class DatabaseService {
       tags: data.tags,
       // wallet: data.wallet 
     });
-    await this.setKeyData(this.TRANSACTIONS_STORAGE, this.transactions);
   }
 
   public async loadData() {

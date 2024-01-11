@@ -1,6 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { OverlayEventDetail } from '@ionic/core/components';
+import { addIcons } from 'ionicons';
+import { addOutline, trendingDownOutline, trendingUpOutline } from 'ionicons/icons';
 import { FormsModule } from '@angular/forms';
 // import { ModalController } from '@ionic/angular';
 import {
@@ -57,6 +58,7 @@ export class Tab2Page {
 
   // объект новой транзакции
   public newTransaction: Transaction = {
+    // uuid: uuid()
     type: -1,
     date: new Date(),
     name: '',
@@ -68,7 +70,8 @@ export class Tab2Page {
   constructor(public databaseService: DatabaseService, private transactionModalCtrl: ModalController) {
     this.transactions = databaseService.transactions;
     this.databaseService = databaseService;
-    //this.modal = 
+    
+    addIcons({ addOutline, trendingDownOutline, trendingUpOutline });
   }
 
   // для оптимизации треканья транзакций т.к. их будут тонныы
@@ -82,37 +85,42 @@ export class Tab2Page {
     const modal = await this.transactionModalCtrl.create({
       component: TransactionModalPopupPage,
       componentProps: {
-        'name': "place name",
-        'sum': 0
+        name: transaction ? transaction.name : '',
+        sum: transaction ? transaction.sum : 0
       }
     });
-    modal.onDidDismiss().then((modelData) => {
+    modal.onDidDismiss().then(async (modelData) => {
       if (modelData !== null) {
         console.log('Modal Data : ' + modelData.data);
         let newTr = modelData.data;
         if (newTr !== undefined) {
-          this.databaseService.addNewTransaction(newTr);
+          if (!transaction) {
+            // добавляем транзакцию 
+            this.databaseService.addTransaction(newTr);
+            // после добавления транзакции сохраняем все транзакции в сторадже
+            await this.databaseService.saveTransactions();
+          } else {
+            transaction.name = newTr.name;
+            transaction.sum = newTr.sum;
+            // после редактирования транзакции сохраняем все транзакции в сторадже
+            await this.databaseService.saveTransactions();
+          }
         }
       }
     });
     return await modal.present();
-    
+    // onWillDismiss(event: Event) {
+    //   const ev = event as CustomEvent<OverlayEventDetail<Transaction>>;
+    //   if (ev.detail.role === 'confirm') {
+    //     let newTr = ev.detail.data;
+    //     if (newTr !== undefined) {
+    //       this.databaseService.addNewTransaction(newTr);
+    //     }
+    //   }
+    // }
   }
-  // cancel() {
-  //   this.modal.dismiss({}, 'cancel');
-  // }
-  // confirm() {
-  //   this.modal.dismiss(this.newTransaction, 'confirm');
-  // }
-  // onWillDismiss(event: Event) {
-  //   const ev = event as CustomEvent<OverlayEventDetail<Transaction>>;
-  //   if (ev.detail.role === 'confirm') {
-  //     let newTr = ev.detail.data;
-  //     if (newTr !== undefined) {
-  //       this.databaseService.addNewTransaction(newTr);
-  //     }
-  //   }
-  // }
+
+
 
 
 

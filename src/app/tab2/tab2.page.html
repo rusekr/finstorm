@@ -10,7 +10,7 @@
 
   <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button expand="block" (click)="openTransactionModal(null)">
-      <ion-icon name="add"></ion-icon>
+      <ion-icon aria-hidden="true" name="add-outline"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
@@ -22,7 +22,11 @@
 
   <ion-list>
     <ion-item *ngFor="let transaction of databaseService.transactions; index as position; trackBy: trackTransactions" (click)="openTransactionModal(transaction)">
-      <ion-label>{{ transaction.type === 1 ? '' : '-' }}{{ transaction.sum }} "{{ transaction.name }}" - {{ transaction.date.toISOString() }} </ion-label>
+      <ion-label>
+        <ion-icon *ngIf="transaction.type === 1" aria-hidden="true" name="trending-up-outline"></ion-icon>
+        <ion-icon *ngIf="transaction.type === -1" aria-hidden="true" name="trending-down-outline"></ion-icon>
+        {{ transaction.sum }} "{{ transaction.name }}" - {{ transaction.date.toISOString() }}
+      </ion-label>
     </ion-item>
   </ion-list>
 

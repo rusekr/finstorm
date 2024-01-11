@@ -21,16 +21,14 @@ export class TransactionModalPopupPage implements OnInit {
   ngOnInit() {
   }
 
-  async closeModal() {
-    const close: string = "Modal Removed";
-    await this.modalController.dismiss(close);
-  }
-
   cancel() {
-    this.modalController.dismiss({}, 'cancel');
+    this.modalController.dismiss(null, 'cancel');
   }
   confirm() {
-    this.modalController.dismiss({}, 'confirm');
+    this.modalController.dismiss({
+      name: this.name,
+      sum: this.sum
+    }, 'confirm');
   }
 
 }
