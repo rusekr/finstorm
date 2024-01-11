@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { addIcons } from 'ionicons';
 import { addOutline, trendingDownOutline, trendingUpOutline } from 'ionicons/icons';
@@ -16,7 +16,10 @@ import {
   IonContent, 
   IonList, 
   IonIcon, 
-  IonItem, 
+  IonItem,
+  IonItemSliding,
+  IonItemOption,
+  IonItemOptions,
   IonLabel,
   IonModal,
   ModalController
@@ -45,7 +48,10 @@ import { TransactionModalPopupPage } from '../transaction-modal-popup/transactio
     IonIcon, 
     IonInput,
     IonList, 
-    IonItem, 
+    IonItem,
+    IonItemSliding,
+    IonItemOption,
+    IonItemOptions,
     IonLabel,
     IonModal,
     FormsModule
@@ -58,7 +64,7 @@ export class Tab2Page {
 
   // объект новой транзакции
   public newTransaction: Transaction = {
-    // uuid: uuid()
+    id: 0,
     type: -1,
     date: new Date(),
     name: '',
@@ -76,7 +82,7 @@ export class Tab2Page {
 
   // для оптимизации треканья транзакций т.к. их будут тонныы
   trackTransactions(index: number, transactionObject: any) {
-    return index;// TODO: transactionObject.id;
+    return transactionObject.id;
   }
 
 
@@ -120,8 +126,10 @@ export class Tab2Page {
     // }
   }
 
-
-
+  async deleteTransaction (index: number) {
+    this.databaseService.deleteTransaction(index);
+    await this.databaseService.saveTransactions();
+  }
 
 
 

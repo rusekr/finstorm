@@ -11,7 +11,7 @@ export interface Wallet {
 }
 
 export interface Transaction {
-  // TODO: добавить id: как ууид или инкремент
+  id: number, // инкремент // TODO: хранить инкремент отдельно!! т.к. при удалении последдней транзакции он теряется
   type: number, // тип - доход (1), расход (-1)
   date: Date; // дата транзакции
   name: string; // имя 
@@ -51,14 +51,21 @@ export class DatabaseService {
   }
 
   public addTransaction(data: Transaction) {
+    const lastElement = this.transactions[this.transactions.length-1];
+    const lastIndex = lastElement && this.transactions[this.transactions.length-1].id || 0; // TODO: хранить инкремент отдельно!! т.к. при удалении последдней транзакции он теряется
     this.transactions.unshift({
-      type: data.type,
+      id: lastIndex + 1,
+      type: data.type || -1,
       date: data.date || new Date(),
       name: data.name,
       sum: data.sum,
       tags: data.tags,
       // wallet: data.wallet 
     });
+  }
+
+  public deleteTransaction(index: number) {
+    this.transactions.splice(index, 1);
   }
 
   public async loadData() {

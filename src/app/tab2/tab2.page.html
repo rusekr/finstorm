@@ -21,13 +21,18 @@
   </ion-header>
 
   <ion-list>
-    <ion-item *ngFor="let transaction of databaseService.transactions; index as position; trackBy: trackTransactions" (click)="openTransactionModal(transaction)">
-      <ion-label>
-        <ion-icon *ngIf="transaction.type === 1" aria-hidden="true" name="trending-up-outline"></ion-icon>
-        <ion-icon *ngIf="transaction.type === -1" aria-hidden="true" name="trending-down-outline"></ion-icon>
-        {{ transaction.sum }} "{{ transaction.name }}" - {{ transaction.date.toISOString() }}
-      </ion-label>
-    </ion-item>
+    <ion-item-sliding *ngFor="let transaction of databaseService.transactions; index as position; trackBy: trackTransactions">
+      <ion-item (click)="openTransactionModal(transaction)">
+        <ion-icon *ngIf="transaction.type === 1" aria-hidden="true" name="trending-up-outline" slot="start"></ion-icon>
+        <ion-icon *ngIf="transaction.type === -1" aria-hidden="true" name="trending-down-outline" slot="start"></ion-icon>
+        <ion-label>
+          {{ transaction.sum }} "{{ transaction.name }}" - {{ transaction.date.toISOString() }}
+        </ion-label>
+      </ion-item>
+      <ion-item-options>
+        <ion-item-option color="danger" (click)="deleteTransaction(position)">Удалить</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 
 </ion-content>
