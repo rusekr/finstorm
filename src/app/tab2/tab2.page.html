@@ -21,7 +21,7 @@
   </ion-header>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let transaction of databaseService.transactions; index as position; trackBy: trackTransactions">
+    <ion-item-sliding *ngFor="let transaction of transactions; index as position; trackBy: trackTransactions">
       <ion-item (click)="openTransactionModal(transaction)">
         <ion-icon *ngIf="transaction.type === 1" aria-hidden="true" name="trending-up-outline" slot="start"></ion-icon>
         <ion-icon *ngIf="transaction.type === -1" aria-hidden="true" name="trending-down-outline" slot="start"></ion-icon>

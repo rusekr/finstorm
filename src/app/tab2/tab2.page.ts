@@ -74,7 +74,7 @@ export class Tab2Page {
   };
 
   constructor(public databaseService: DatabaseService, private transactionModalCtrl: ModalController) {
-    this.transactions = databaseService.transactions;
+    this.transactions = databaseService.getTransactions();
     this.databaseService = databaseService;
     
     addIcons({ addOutline, trendingDownOutline, trendingUpOutline });

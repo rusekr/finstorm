@@ -31,7 +31,8 @@ export class DatabaseService {
  
   public tags: Tag[] = [];
   public wallets: Wallet[] = [];
-  public transactions: Transaction[] = [];
+  private transactions: Transaction[] = [];
+  private transactionsLastId: number = 0;
 
   constructor() { }
 
@@ -41,20 +42,22 @@ export class DatabaseService {
     return (value ? JSON.parse(value) : []);
   }
 
-  private async setKeyData(key: string, data: any[]) {
+  private async setKeyData(key: string, data: object) {
     await Preferences.set({ key: key, value: JSON.stringify(data) });
     return data;
   }
 
+  public getTransactions() {
+    return this.transactions;
+  }
+
   public async saveTransactions() {
-    return this.setKeyData(this.TRANSACTIONS_STORAGE, this.transactions);
+    return this.setKeyData(this.TRANSACTIONS_STORAGE, { transactions: this.transactions, lastId: this.transactionsLastId });
   }
 
   public addTransaction(data: Transaction) {
-    const lastElement = this.transactions[this.transactions.length-1];
-    const lastIndex = lastElement && this.transactions[this.transactions.length-1].id || 0; // TODO: хранить инкремент отдельно!! т.к. при удалении последдней транзакции он теряется
     this.transactions.unshift({
-      id: lastIndex + 1,
+      id: ++this.transactionsLastId,
       type: data.type || -1,
       date: data.date || new Date(),
       name: data.name,
@@ -72,10 +75,12 @@ export class DatabaseService {
 
     this.tags = await this.getKeyData(this.TAG_STORAGE);
     this.wallets = await this.getKeyData(this.WALLETS_STORAGE);
-    this.transactions = (await this.getKeyData(this.TRANSACTIONS_STORAGE)).map((t: any) => {
+    const transactionsObject = (await this.getKeyData(this.TRANSACTIONS_STORAGE));
+    this.transactions = transactionsObject.transactions.map((t: any) => {
       t.date = new Date(t.date);
       return t;
     });
+    this.transactionsLastId = transactionsObject.lastId;
   }
 
 }
