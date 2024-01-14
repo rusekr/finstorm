@@ -11,6 +11,14 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-segment [(ngModel)]="type">
+    <ion-segment-button value="-1">
+      <ion-label>Расход</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="1">
+      <ion-label>Доход</ion-label>
+    </ion-segment-button>
+  </ion-segment>
   <ion-item>
     <ion-input
       label="Наименование"

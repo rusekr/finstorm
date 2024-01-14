@@ -92,7 +92,8 @@ export class Tab2Page {
       component: TransactionModalPopupPage,
       componentProps: {
         name: transaction ? transaction.name : '',
-        sum: transaction ? transaction.sum : 0
+        sum: transaction ? transaction.sum : 0,
+        type: transaction ? String(transaction.type) : '-1'
       }
     });
     modal.onDidDismiss().then(async (modelData) => {
@@ -100,6 +101,7 @@ export class Tab2Page {
         console.log('Modal Data : ' + modelData.data);
         let newTr = modelData.data;
         if (newTr !== undefined) {
+          newTr.type = parseInt(newTr.type);
           if (!transaction) {
             // добавляем транзакцию 
             this.databaseService.addTransaction(newTr);
@@ -108,6 +110,7 @@ export class Tab2Page {
           } else {
             transaction.name = newTr.name;
             transaction.sum = newTr.sum;
+            transaction.type = newTr.type;
             // после редактирования транзакции сохраняем все транзакции в сторадже
             await this.databaseService.saveTransactions();
           }

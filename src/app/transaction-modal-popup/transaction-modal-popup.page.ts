@@ -15,6 +15,7 @@ export class TransactionModalPopupPage implements OnInit {
 
   @Input() name: string = '';
   @Input() sum: number = 0;
+  @Input() type: string = '-1';
 
   constructor(private modalController: ModalController) { }
 
@@ -27,7 +28,8 @@ export class TransactionModalPopupPage implements OnInit {
   confirm() {
     this.modalController.dismiss({
       name: this.name,
-      sum: this.sum
+      sum: this.sum,
+      type: this.type
     }, 'confirm');
   }
 
