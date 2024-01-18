@@ -15,11 +15,16 @@ export class TransactionModalPopupPage implements OnInit {
 
   @Input() name: string = '';
   @Input() sum: number = 0;
-  @Input() type: string = '-1';
+  @Input() type: string = 'out';
 
-  constructor(private modalController: ModalController) { }
+  constructor(private modalController: ModalController) {
+  }
 
   ngOnInit() {
+  }
+
+  segmentChanged(event: any) {
+    this.type = event.detail.value;
   }
 
   cancel() {

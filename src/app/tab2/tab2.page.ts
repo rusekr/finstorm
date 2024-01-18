@@ -93,15 +93,15 @@ export class Tab2Page {
       componentProps: {
         name: transaction ? transaction.name : '',
         sum: transaction ? transaction.sum : 0,
-        type: transaction ? String(transaction.type) : '-1'
+        type: transaction && transaction.type === 1 ? 'in' : 'out'
       }
     });
-    modal.onDidDismiss().then(async (modelData) => {
-      if (modelData !== null) {
-        console.log('Modal Data : ' + modelData.data);
-        let newTr = modelData.data;
+    modal.onDidDismiss().then(async (modаlData) => {
+      if (modаlData !== null) {
+        console.log('Modal Data : ' + modаlData.data);
+        let newTr = modаlData.data;
         if (newTr !== undefined) {
-          newTr.type = parseInt(newTr.type);
+          newTr.type = newTr.type === 'in' ? 1 : -1;
           if (!transaction) {
             // добавляем транзакцию 
             this.databaseService.addTransaction(newTr);

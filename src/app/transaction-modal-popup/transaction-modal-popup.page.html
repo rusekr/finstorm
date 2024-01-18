@@ -11,11 +11,11 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-segment [(ngModel)]="type">
-    <ion-segment-button value="-1">
+  <ion-segment [value]="type" (ionChange)="segmentChanged($event)">
+    <ion-segment-button value="out">
       <ion-label>Расход</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="1">
+    <ion-segment-button value="in">
       <ion-label>Доход</ion-label>
     </ion-segment-button>
   </ion-segment>
