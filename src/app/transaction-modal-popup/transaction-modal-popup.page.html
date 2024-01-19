@@ -11,7 +11,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-segment [value]="type" (ionChange)="segmentChanged($event)">
+  <ion-segment [(ngModel)]="transactionType" [swipeGesture]="false" >
     <ion-segment-button value="out">
       <ion-label>Расход</ion-label>
     </ion-segment-button>
@@ -19,6 +19,10 @@
       <ion-label>Доход</ion-label>
     </ion-segment-button>
   </ion-segment>
+  <ion-radio-group class="radio-transaction-type" [(ngModel)]="transactionType" >
+    <ion-radio value="out">Расход</ion-radio>
+    <ion-radio value="in">Доход</ion-radio>
+  </ion-radio-group>
   <ion-item>
     <ion-input
       label="Наименование"

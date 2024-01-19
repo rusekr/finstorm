@@ -75,7 +75,7 @@ export class Tab2Page {
 
   constructor(public databaseService: DatabaseService, private transactionModalCtrl: ModalController) {
     this.transactions = databaseService.getTransactions();
-    this.databaseService = databaseService;
+    //this.databaseService = databaseService;
     
     addIcons({ addOutline, trendingDownOutline, trendingUpOutline });
   }
@@ -89,19 +89,20 @@ export class Tab2Page {
   async openTransactionModal (transaction: any) {
 
     const modal = await this.transactionModalCtrl.create({
+      //animated: false, // TODO: убрать после фиксов сегментов
       component: TransactionModalPopupPage,
       componentProps: {
         name: transaction ? transaction.name : '',
         sum: transaction ? transaction.sum : 0,
-        type: transaction && transaction.type === 1 ? 'in' : 'out'
+        transactionType: (transaction && transaction.type === 1 ? 'in' : 'out') as string
       }
     });
     modal.onDidDismiss().then(async (modаlData) => {
       if (modаlData !== null) {
         console.log('Modal Data : ' + modаlData.data);
         let newTr = modаlData.data;
-        if (newTr !== undefined) {
-          newTr.type = newTr.type === 'in' ? 1 : -1;
+        if (newTr instanceof Object) {
+          newTr.transactionType = newTr.transactionType === 'in' ? 1 : -1;
           if (!transaction) {
             // добавляем транзакцию 
             this.databaseService.addTransaction(newTr);
@@ -110,7 +111,7 @@ export class Tab2Page {
           } else {
             transaction.name = newTr.name;
             transaction.sum = newTr.sum;
-            transaction.type = newTr.type;
+            transaction.type = newTr.transactionType;
             // после редактирования транзакции сохраняем все транзакции в сторадже
             await this.databaseService.saveTransactions();
           }
