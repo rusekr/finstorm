@@ -1,0 +1,13 @@
+diff --git a/node_modules/@ionic/core/components/ion-segment.js b/node_modules/@ionic/core/components/ion-segment.js
+index 3df0272..4bace35 100644
+--- a/node_modules/@ionic/core/components/ion-segment.js
++++ b/node_modules/@ionic/core/components/ion-segment.js
+@@ -109,6 +109,8 @@ const Segment = /*@__PURE__*/ proxyCustomElement(class Segment extends HTMLEleme
+     }
+     async componentDidLoad() {
+         this.setCheckedClasses();
++
++        this.ionSelect.emit({ value: this.value });
+         /**
+          * We need to wait for the buttons to all be rendered
+          * before we can scroll.
