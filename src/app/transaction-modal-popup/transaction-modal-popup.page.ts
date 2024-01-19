@@ -15,15 +15,15 @@ export class TransactionModalPopupPage implements OnInit {
 
   @Input() name: string = '';
   @Input() sum: number = 0;
+  @Input() date: string = (new Date()).toISOString();
   transactionType: string = 'out';
 
   constructor(private modalController: ModalController) {
-    console.log(`constructor ${this.transactionType} transactionType`);
+
   }
 
   ngOnInit() {
-    console.log(`ngOnInit ${this.transactionType} transactionType`);
-    //this.transactionType = 'in';
+
   }
 
   cancel() {
@@ -33,6 +33,7 @@ export class TransactionModalPopupPage implements OnInit {
     this.modalController.dismiss({
       name: this.name,
       sum: this.sum,
+      date: this.date,
       transactionType: this.transactionType
     }, 'confirm');
   }

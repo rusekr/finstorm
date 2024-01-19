@@ -89,17 +89,16 @@ export class Tab2Page {
   async openTransactionModal (transaction: any) {
 
     const modal = await this.transactionModalCtrl.create({
-      //animated: false, // TODO: убрать после фиксов сегментов
       component: TransactionModalPopupPage,
       componentProps: {
         name: transaction ? transaction.name : '',
         sum: transaction ? transaction.sum : 0,
+        date: transaction ? transaction.date : (new Date()).toISOString(),
         transactionType: (transaction && transaction.type === 1 ? 'in' : 'out') as string
       }
     });
     modal.onDidDismiss().then(async (modаlData) => {
       if (modаlData !== null) {
-        console.log('Modal Data : ' + modаlData.data);
         let newTr = modаlData.data;
         if (newTr instanceof Object) {
           newTr.transactionType = newTr.transactionType === 'in' ? 1 : -1;
@@ -111,6 +110,7 @@ export class Tab2Page {
           } else {
             transaction.name = newTr.name;
             transaction.sum = newTr.sum;
+            transaction.date = newTr.date;
             transaction.type = newTr.transactionType;
             // после редактирования транзакции сохраняем все транзакции в сторадже
             await this.databaseService.saveTransactions();

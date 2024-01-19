@@ -11,6 +11,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
+  <ion-datetime-button datetime="datetime" ></ion-datetime-button>
   <ion-segment [(ngModel)]="transactionType" [swipeGesture]="false" >
     <ion-segment-button value="out">
       <ion-label>Расход</ion-label>
@@ -38,3 +39,9 @@
     ></ion-input>
   </ion-item>
 </ion-content>
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime id="datetime" locale="ru-RU" [(ngModel)]="date" [showDefaultButtons]="true"></ion-datetime>
+  </ng-template>
+</ion-modal>
