@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { addIcons } from 'ionicons';
-import { addOutline, trendingDownOutline, trendingUpOutline } from 'ionicons/icons';
+import { 
+  addOutline, 
+  trendingDownOutline, 
+  trendingUpOutline 
+} from 'ionicons/icons';
 import { FormsModule } from '@angular/forms';
 // import { ModalController } from '@ionic/angular';
 import {
@@ -66,7 +70,11 @@ export class Tab2Page {
     this.transactions = databaseService.getTransactions();
     //this.databaseService = databaseService;
     
-    addIcons({ addOutline, trendingDownOutline, trendingUpOutline });
+    addIcons({ 
+      addOutline, 
+      trendingDownOutline, 
+      trendingUpOutline 
+    });
   }
 
   // для оптимизации треканья транзакций т.к. их будут тонныы

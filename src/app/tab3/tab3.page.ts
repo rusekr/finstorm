@@ -1,5 +1,18 @@
 import { Component } from '@angular/core';
-import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { 
+  pricetagsOutline
+} from 'ionicons/icons';
+import { 
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonLabel,
+  IonList,
+  IonIcon,
+  IonItem
+} from '@ionic/angular/standalone';
 import { ExploreContainerComponent } from '../explore-container/explore-container.component';
 
 @Component({
@@ -7,8 +20,26 @@ import { ExploreContainerComponent } from '../explore-container/explore-containe
   templateUrl: 'tab3.page.html',
   styleUrls: ['tab3.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, ExploreContainerComponent],
+  imports: [
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    ExploreContainerComponent,
+    IonLabel,
+    IonList,
+    IonIcon,
+    IonItem
+  ],
 })
 export class Tab3Page {
-  constructor() {}
+  constructor() {
+    addIcons({ 
+      pricetagsOutline 
+    });
+  }
+
+  openCategoriesPage() {
+
+  }
 }

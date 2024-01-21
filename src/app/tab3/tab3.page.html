@@ -13,5 +13,12 @@
     </ion-toolbar>
   </ion-header>
 
-  <app-explore-container name="Страница настроек"></app-explore-container>
+  <ion-list>
+    <ion-item (click)="openCategoriesPage()">
+      <ion-icon aria-hidden="true" name="pricetags-outline" slot="start"></ion-icon>
+      <ion-label>
+        Категории
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
