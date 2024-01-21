@@ -62,17 +62,6 @@ export class Tab2Page {
   // работа с транзакциями
   public transactions;
 
-  // объект новой транзакции
-  public newTransaction: Transaction = {
-    id: 0,
-    type: -1,
-    date: new Date(),
-    name: '',
-    sum: 0,
-    tags: [],
-    // wallet: 0 
-  };
-
   constructor(public databaseService: DatabaseService, private transactionModalCtrl: ModalController) {
     this.transactions = databaseService.getTransactions();
     //this.databaseService = databaseService;
@@ -93,7 +82,7 @@ export class Tab2Page {
       componentProps: {
         name: transaction ? transaction.name : '',
         sum: transaction ? transaction.sum : 0,
-        date: transaction ? transaction.date : (new Date()).toISOString(),
+        date: transaction ? transaction.date : new Date().toISOString(),
         transactionType: (transaction && transaction.type === 1 ? 'in' : 'out') as string
       }
     });
@@ -119,15 +108,6 @@ export class Tab2Page {
       }
     });
     return await modal.present();
-    // onWillDismiss(event: Event) {
-    //   const ev = event as CustomEvent<OverlayEventDetail<Transaction>>;
-    //   if (ev.detail.role === 'confirm') {
-    //     let newTr = ev.detail.data;
-    //     if (newTr !== undefined) {
-    //       this.databaseService.addNewTransaction(newTr);
-    //     }
-    //   }
-    // }
   }
 
   async deleteTransaction (index: number) {

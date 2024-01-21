@@ -13,9 +13,9 @@ import { ModalController } from '@ionic/angular/standalone';
 })
 export class TransactionModalPopupPage implements OnInit {
 
-  @Input() name: string = '';
-  @Input() sum: number = 0;
-  @Input() date: string = (new Date()).toISOString();
+  name: string = '';
+  sum: number = 0;
+  date: string = (new Date()).toISOString();
   transactionType: string = 'out';
 
   constructor(private modalController: ModalController) {

@@ -42,6 +42,15 @@
 
 <ion-modal [keepContentsMounted]="true">
   <ng-template>
-    <ion-datetime id="datetime" locale="ru-RU" [(ngModel)]="date" [showDefaultButtons]="true"></ion-datetime>
+    <ion-datetime 
+      id="datetime" 
+      locale="ru-RU" 
+      [(ngModel)]="date" 
+      [showDefaultButtons]="false"
+      [firstDayOfWeek]="1"
+      [showDefaultButtons]="true"
+      cancelText="Отмена"
+      doneText="Ок"
+    ></ion-datetime>
   </ng-template>
 </ion-modal>

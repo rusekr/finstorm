@@ -13,7 +13,7 @@ export interface Wallet {
 export interface Transaction {
   id: number, // инкремент // TODO: хранить инкремент отдельно!! т.к. при удалении последдней транзакции он теряется
   type: number, // тип - доход (1), расход (-1)
-  date: Date; // дата транзакции
+  date: string; // дата транзакции в ISO формате
   name: string; // имя 
   sum: number; // сумма
   tags: Tag[]; // тэги (категории)
@@ -59,7 +59,7 @@ export class DatabaseService {
     this.transactions.unshift({
       id: ++this.transactionsLastId,
       type: data.type || -1,
-      date: data.date || new Date(),
+      date: data.date || (new Date()).toISOString(),
       name: data.name,
       sum: data.sum,
       tags: data.tags,
@@ -76,10 +76,7 @@ export class DatabaseService {
     this.tags = await this.getKeyData(this.TAG_STORAGE);
     this.wallets = await this.getKeyData(this.WALLETS_STORAGE);
     const transactionsObject = (await this.getKeyData(this.TRANSACTIONS_STORAGE));
-    this.transactions = transactionsObject.transactions.map((t: any) => {
-      t.date = new Date(t.date);
-      return t;
-    });
+    this.transactions = transactionsObject.transactions;
     this.transactionsLastId = transactionsObject.lastId;
   }
 
