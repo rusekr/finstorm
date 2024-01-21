@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
 
-export interface Tag {
+export interface Category {
   name: string;
+  children: Category[];
 }
 
 export interface Wallet {
@@ -16,7 +17,7 @@ export interface Transaction {
   date: string; // дата транзакции в ISO формате
   name: string; // имя 
   sum: number; // сумма
-  tags: Tag[]; // тэги (категории)
+  categories: Category[]; // тэги (категории)
   // wallet: Wallet; // связанный кошелёк
 }
 
@@ -25,11 +26,11 @@ export interface Transaction {
 })
 export class DatabaseService {
 
-  private TAG_STORAGE: string = 'tags';
+  private CATEGORIES_STORAGE: string = 'categories';
   private WALLETS_STORAGE: string = 'wallets';
   private TRANSACTIONS_STORAGE: string = 'transactions';
  
-  public tags: Tag[] = [];
+  public categories: Category[] = [];
   public wallets: Wallet[] = [];
   private transactions: Transaction[] = [];
   private transactionsLastId: number = 0;
@@ -62,7 +63,7 @@ export class DatabaseService {
       date: data.date || (new Date()).toISOString(),
       name: data.name,
       sum: data.sum,
-      tags: data.tags,
+      categories: data.categories,
       // wallet: data.wallet 
     });
   }
@@ -73,7 +74,7 @@ export class DatabaseService {
 
   public async loadData() {
 
-    this.tags = await this.getKeyData(this.TAG_STORAGE);
+    this.categories = await this.getKeyData(this.CATEGORIES_STORAGE);
     this.wallets = await this.getKeyData(this.WALLETS_STORAGE);
     const transactionsObject = (await this.getKeyData(this.TRANSACTIONS_STORAGE));
     this.transactions = transactionsObject.transactions;
