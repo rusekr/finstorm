@@ -11,12 +11,12 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <ion-datetime-button datetime="datetime" ></ion-datetime-button>
-  <ion-segment [(ngModel)]="transactionType" [swipeGesture]="false" >
-    <ion-segment-button value="out">
+  <ion-datetime-button datetime="datetime"></ion-datetime-button>
+  <ion-segment [(ngModel)]="transactionType" [swipeGesture]="false">
+    <ion-segment-button [value]="transactionTypes.EXPENSE">
       <ion-label>Расход</ion-label>
     </ion-segment-button>
-    <ion-segment-button value="in">
+    <ion-segment-button [value]="transactionTypes.INCOME">
       <ion-label>Доход</ion-label>
     </ion-segment-button>
   </ion-segment>
@@ -42,10 +42,10 @@
 
 <ion-modal [keepContentsMounted]="true">
   <ng-template>
-    <ion-datetime 
-      id="datetime" 
-      locale="ru-RU" 
-      [(ngModel)]="date" 
+    <ion-datetime
+      id="datetime"
+      locale="ru-RU"
+      [(ngModel)]="date"
       [showDefaultButtons]="false"
       [firstDayOfWeek]="1"
       [showDefaultButtons]="true"
