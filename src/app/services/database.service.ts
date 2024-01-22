@@ -1,39 +1,19 @@
 import { Injectable } from '@angular/core';
-import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Preferences } from '@capacitor/preferences';
-
-export interface Category {
-  name: string;
-  children: Category[];
-}
-
-export interface Wallet {
-  name: string;
-}
-
-export interface Transaction {
-  id: number, // инкремент // TODO: хранить инкремент отдельно!! т.к. при удалении последдней транзакции он теряется
-  type: number, // тип - доход (1), расход (-1)
-  date: string; // дата транзакции в ISO формате
-  name: string; // имя 
-  sum: number; // сумма
-  categories: Category[]; // тэги (категории)
-  // wallet: Wallet; // связанный кошелёк
-}
+import { Category, Wallet, Transaction } from '../models/database.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DatabaseService {
-
-  private CATEGORIES_STORAGE: string = 'categories';
-  private WALLETS_STORAGE: string = 'wallets';
-  private TRANSACTIONS_STORAGE: string = 'transactions';
- 
   public categories: Category[] = [];
   public wallets: Wallet[] = [];
+
+  private CATEGORIES_STORAGE: string = 'categories';
+  private TRANSACTIONS_STORAGE: string = 'transactions';
   private transactions: Transaction[] = [];
   private transactionsLastId: number = 0;
+  private WALLETS_STORAGE: string = 'wallets';
 
   constructor() { }
 
@@ -64,7 +44,7 @@ export class DatabaseService {
       name: data.name,
       sum: data.sum,
       categories: data.categories,
-      // wallet: data.wallet 
+      // wallet: data.wallet
     });
   }
 
@@ -73,11 +53,10 @@ export class DatabaseService {
   }
 
   public async loadData() {
-
     this.categories = await this.getKeyData(this.CATEGORIES_STORAGE);
     this.wallets = await this.getKeyData(this.WALLETS_STORAGE);
     const transactionsObject = (await this.getKeyData(this.TRANSACTIONS_STORAGE));
-    this.transactions = transactionsObject.transactions;
+    this.transactions = transactionsObject.transactions || [];
     this.transactionsLastId = transactionsObject.lastId;
   }
 
