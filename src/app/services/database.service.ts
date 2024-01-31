@@ -6,16 +6,20 @@ import { Category, Wallet, Transaction } from '../models/database.interface';
   providedIn: 'root'
 })
 export class DatabaseService {
-  public categories: Category[] = [];
   public wallets: Wallet[] = [];
 
   private CATEGORIES_STORAGE: string = 'categories';
+  private categories: Category[] = [];
+  private categoriesLastId: number = 0;
+
   private TRANSACTIONS_STORAGE: string = 'transactions';
   private transactions: Transaction[] = [];
   private transactionsLastId: number = 0;
+
   private WALLETS_STORAGE: string = 'wallets';
 
   constructor() { }
+
 
   // получение по ключу  данных
   private async getKeyData(key: string) {
@@ -28,6 +32,37 @@ export class DatabaseService {
     return data;
   }
 
+  public async loadData() {
+    this.wallets = await this.getKeyData(this.WALLETS_STORAGE);
+
+    const categoriesObject = (await this.getKeyData(this.CATEGORIES_STORAGE));
+    this.categories = categoriesObject.categories || [];
+    this.categoriesLastId = categoriesObject.lastId;
+
+    const transactionsObject = (await this.getKeyData(this.TRANSACTIONS_STORAGE));
+    this.transactions = transactionsObject.transactions || [];
+    this.transactionsLastId = transactionsObject.lastId;
+  }
+
+  // категории
+  public getCategories() {
+    return this.categories;
+  }
+
+  public async saveCategories() {
+    return this.setKeyData(this.CATEGORIES_STORAGE, { categories: this.categories, lastId: this.categoriesLastId });
+  }
+
+  public addCategory(data: Category) {
+    this.categories.unshift({
+      id: ++this.categoriesLastId,
+      name: data.name,
+      children: []
+    });
+  }
+
+
+  // транзакции
   public getTransactions() {
     return this.transactions;
   }
@@ -52,12 +87,6 @@ export class DatabaseService {
     this.transactions.splice(index, 1);
   }
 
-  public async loadData() {
-    this.categories = await this.getKeyData(this.CATEGORIES_STORAGE);
-    this.wallets = await this.getKeyData(this.WALLETS_STORAGE);
-    const transactionsObject = (await this.getKeyData(this.TRANSACTIONS_STORAGE));
-    this.transactions = transactionsObject.transactions || [];
-    this.transactionsLastId = transactionsObject.lastId;
-  }
+
 
 }

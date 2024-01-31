@@ -9,4 +9,8 @@ export const routes: Routes = [
     path: 'transaction-modal-popup',
     loadComponent: () => import('./transaction-modal-popup/transaction-modal-popup.page').then( m => m.TransactionModalPopupPage)
   },
+  {
+    path: 'categories',
+    loadComponent: () => import('./categories/categories.page').then( m => m.CategoriesPage)
+  },
 ];

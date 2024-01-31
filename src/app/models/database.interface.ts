@@ -4,6 +4,8 @@ export enum TransactionType {
 };
 
 export interface Category {
+  id: number;
+//  parent: Category;
   name: string;
   children: Category[];
 }
