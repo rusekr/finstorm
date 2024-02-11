@@ -7,7 +7,7 @@ export interface Category {
   id: number;
 //  parent: Category;
   name: string;
-  children: Category[];
+//  children: Category[];
 }
 
 export interface Wallet {

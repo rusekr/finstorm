@@ -57,8 +57,12 @@ export class DatabaseService {
     this.categories.unshift({
       id: ++this.categoriesLastId,
       name: data.name,
-      children: []
+//      children: []
     });
+  }
+
+  public deleteCategory(index: number) {
+    this.categories.splice(index, 1);
   }
 
 
