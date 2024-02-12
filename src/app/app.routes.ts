@@ -13,4 +13,8 @@ export const routes: Routes = [
     path: 'categories',
     loadComponent: () => import('./categories/categories.page').then( m => m.CategoriesPage)
   },
+  {
+    path: 'category-modal-popup',
+    loadComponent: () => import('./category-modal-popup/category-modal-popup.page').then( m => m.CategoryModalPopupPage)
+  },
 ];
