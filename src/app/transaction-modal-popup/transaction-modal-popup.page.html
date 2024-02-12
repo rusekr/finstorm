@@ -12,7 +12,7 @@
 
 <ion-content class="ion-padding">
   <ion-datetime-button datetime="datetime"></ion-datetime-button>
-  <ion-segment [(ngModel)]="transactionType" [swipeGesture]="false">
+  <ion-segment [(ngModel)]="type" [swipeGesture]="false">
     <ion-segment-button [value]="transactionTypes.EXPENSE">
       <ion-label>Расход</ion-label>
     </ion-segment-button>
@@ -20,6 +20,11 @@
       <ion-label>Доход</ion-label>
     </ion-segment-button>
   </ion-segment>
+  <ion-item>
+    <ion-select aria-label="Категории" placeholder="Выберите категории" [multiple]="true" [(ngModel)]="categories">
+      <ion-select-option *ngFor="let category of allCategories" [value]="category.id">{{ category.name }}</ion-select-option>
+    </ion-select>
+  </ion-item>
   <ion-item>
     <ion-input
       label="Наименование"

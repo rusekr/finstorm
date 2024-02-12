@@ -90,7 +90,8 @@ export class JournalPage {
         name: transaction ? transaction.name : '',
         sum: transaction ? transaction.sum : 0,
         date: transaction ? transaction.date : new Date().toISOString(),
-        transactionType: transaction ? transaction.type : TransactionType.EXPENSE,
+        type: transaction ? transaction.type : TransactionType.EXPENSE,
+        categories: transaction ? transaction.categories : []
       }
     });
 
@@ -108,6 +109,7 @@ export class JournalPage {
         transaction.sum = newTransaction.sum;
         transaction.date = newTransaction.date;
         transaction.type = newTransaction.type;
+        transaction.categories = newTransaction.categories;
         // после редактирования транзакции сохраняем все транзакции в сторадже
         await this.databaseService.saveTransactions();
       }
@@ -115,8 +117,8 @@ export class JournalPage {
     return await modal.present();
   }
 
-  async deleteTransaction (index: number) {
-    this.databaseService.deleteTransaction(index);
+  async deleteTransaction (id: number) {
+    this.databaseService.deleteTransaction(id);
     await this.databaseService.saveTransactions();
   }
 

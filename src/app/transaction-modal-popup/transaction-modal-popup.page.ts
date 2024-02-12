@@ -3,7 +3,8 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { ModalController } from '@ionic/angular/standalone';
-import { TransactionType } from '../models/database.interface';
+import { TransactionType, Category } from '../models/database.interface';
+import { DatabaseService } from '../services/database.service';
 
 @Component({
   selector: 'app-transaction-modal-popup',
@@ -17,11 +18,13 @@ export class TransactionModalPopupPage {
   public date: string = (new Date()).toISOString();
   public name: string = '';
   public sum: number = 0;
-  public transactionType: TransactionType = TransactionType.EXPENSE;
+  public type: TransactionType = TransactionType.EXPENSE;
   public transactionTypes = TransactionType;
+  public categories: Category[] = [];
+  public allCategories: Category[];
 
-  constructor(private modalController: ModalController) {
-
+  constructor(private modalController: ModalController, public databaseService: DatabaseService) {
+    this.allCategories = databaseService.getCategories();
   }
 
   public cancel(): void {
@@ -32,8 +35,8 @@ export class TransactionModalPopupPage {
       name: this.name,
       sum: this.sum,
       date: this.date,
-      type: this.transactionType,
-      categories: [],
+      type: this.type,
+      categories: this.categories,
     }, 'confirm');
   }
 
