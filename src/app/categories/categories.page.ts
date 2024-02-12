@@ -102,8 +102,8 @@ export class CategoriesPage {
     return await modal.present();
   }
 
-  async deleteCategory (index: number) {
-    this.databaseService.deleteCategory(index);
+  async deleteCategory (id: number) {
+    this.databaseService.deleteCategory(id);
     await this.databaseService.saveCategories();
   }
 

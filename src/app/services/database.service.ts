@@ -50,7 +50,16 @@ export class DatabaseService {
   }
 
   public async saveCategories() {
-    return this.setKeyData(this.CATEGORIES_STORAGE, { categories: this.categories, lastId: this.categoriesLastId });
+    this.categories.sort((a, b) => {
+      if (a.name > b.name) {
+        return 1;
+      }
+      if (a.name < b.name) {
+        return -1;
+      }
+      return 0;
+    });
+    return this.setKeyData(this.CATEGORIES_STORAGE, { categories: this.categories.sort(), lastId: this.categoriesLastId });
   }
 
   public addCategory(data: Category) {
@@ -61,7 +70,8 @@ export class DatabaseService {
     });
   }
 
-  public deleteCategory(index: number) {
+  public deleteCategory(id: number) {
+    let index = this.categories.findIndex((c) => c.id === id);
     this.categories.splice(index, 1);
   }
 
@@ -72,6 +82,16 @@ export class DatabaseService {
   }
 
   public async saveTransactions() {
+    // возможно стоит сортировать это на другом этапе но без sql тут сложно что то выдумать пока что
+    this.transactions.sort((a, b) => {
+      if (a.date < b.date) {
+        return 1;
+      }
+      if (a.date > b.date) {
+        return -1;
+      }
+      return 0;
+    });
     return this.setKeyData(this.TRANSACTIONS_STORAGE, { transactions: this.transactions, lastId: this.transactionsLastId });
   }
 
@@ -87,7 +107,8 @@ export class DatabaseService {
     });
   }
 
-  public deleteTransaction(index: number) {
+  public deleteTransaction(id: number) {
+    let index = this.transactions.findIndex((c) => c.id === id);
     this.transactions.splice(index, 1);
   }
 
