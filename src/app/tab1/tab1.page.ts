@@ -14,15 +14,22 @@ import { Transaction, TransactionType } from '../models/database.interface';
 })
 export class Tab1Page {
 
-  public incomeSum: number; // доход (общий или за отрезок времени)
-  public outcomeSum: number; // расход (общий или за отрезок времени)
-  public budgetSum: number; // бюджет (доход минус расход)
+  public incomeSum: number = 0; // доход (общий или за отрезок времени)
+  public outcomeSum: number = 0; // расход (общий или за отрезок времени)
+  public budgetSum: number = 0; // бюджет (доход минус расход)
 
-  public transactions: Transaction[];
+  // TODO: добавить мультиселект категорий, дату от, дату до
+
+  public transactions: Transaction[] = [];
   public transactionTypes = TransactionType;
 
-  constructor(public databaseService: DatabaseService) {
-    this.transactions = databaseService.getTransactions();
+  constructor(private databaseService: DatabaseService) {
+
+
+  }
+
+  ionViewDidEnter() {
+    this.transactions = this.databaseService.getTransactions();
 
     let sums = this.transactions.reduce((acc, cur) => {
       if (cur.type === -1) {
@@ -37,6 +44,6 @@ export class Tab1Page {
     this.outcomeSum = sums.outcome;
 
     this.budgetSum = this.incomeSum - this.outcomeSum;
-
   }
+
 }
